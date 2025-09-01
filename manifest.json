@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Web2Slides",
+  "version": "0.1.0",
+  "description": "Create a slide deck from any webpage.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "notifications"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "dist/background.js"
+  }
+}
