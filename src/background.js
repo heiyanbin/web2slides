@@ -35,6 +35,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       if (!providers || !activeProviderName) {
         sendNotification('Configuration Missing', 'Please select a provider in the extension popup.');
+        chrome.runtime.sendMessage({ action: 'generationComplete' });
         return;
       }
 
@@ -42,6 +43,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       if (!activeProvider || !activeProvider.apiKey) {
         sendNotification('Configuration Missing', `Please set your API Key for ${activeProviderName} in the settings.`);
+        chrome.runtime.sendMessage({ action: 'generationComplete' });
         return;
       }
 
@@ -50,6 +52,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (request.action === 'contentScriptError') {
     console.error('Content script error:', request.error);
     sendNotification('Content Script Error', `An error occurred in the content script: ${request.error}`);
+    chrome.runtime.sendMessage({ action: 'generationComplete' });
   }
 });
 
@@ -89,6 +92,8 @@ async function generateSlides(provider, content) {
   } catch (error) {
     console.error('Error generating slides:', error);
     sendNotification('Error Generating Slides', 'An unexpected error occurred. Please check the console for more details.');
+  } finally {
+    chrome.runtime.sendMessage({ action: 'generationComplete' });
   }
 }
 

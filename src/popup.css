@@ -1,8 +1,11 @@
 :root {
   --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --danger-color: #dc3545;
   --background-color: #f8f9fa;
   --text-color: #212529;
   --border-color: #dee2e6;
+  --card-background: #ffffff;
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -10,8 +13,15 @@ body {
   font-family: var(--font-family);
   background-color: var(--background-color);
   color: var(--text-color);
-  width: 300px;
   padding: 1rem;
+}
+
+#settings-view {
+  width: 400px;
+}
+
+#main-view {
+  width: 300px;
 }
 
 h1 {
@@ -26,7 +36,7 @@ label {
   font-weight: bold;
 }
 
-#provider {
+select {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid var(--border-color);
@@ -35,7 +45,7 @@ label {
   margin-bottom: 1rem;
 }
 
-#generate {
+button {
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
@@ -47,8 +57,26 @@ label {
   transition: background-color 0.2s ease-in-out;
 }
 
-#generate:hover {
+button:hover {
   background-color: #0056b3;
+}
+
+.main-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#generate {
+  flex-grow: 1;
+}
+
+.settings-btn {
+  width: auto;
+  background-color: var(--secondary-color);
+}
+
+.settings-btn:hover {
+  background-color: #5a6268;
 }
 
 hr {
@@ -57,13 +85,116 @@ hr {
   margin: 1rem 0;
 }
 
-a {
-  display: block;
-  text-align: center;
-  color: var(--primary-color);
-  text-decoration: none;
+#settings-view h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
 }
 
-a:hover {
-  text-decoration: underline;
+#add-provider, .provider-form button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#add-provider:hover, .provider-form button:hover {
+  background-color: #0056b3;
+}
+
+#providers-container {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.provider {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.provider h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.provider p {
+  margin: 0.25rem 0;
+  color: #6c757d;
+}
+
+.provider .delete-provider {
+  background-color: var(--danger-color);
+  margin-left: 0.5rem;
+}
+
+.provider .delete-provider:hover {
+  background-color: #c82333;
+}
+
+.provider-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.provider-actions button {
+  width: auto;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+}
+
+.provider-form {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.provider-form label {
+  font-weight: bold;
+}
+
+.provider-form input[type="text"] {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.provider-form .cancel-edit {
+    background-color: #6c757d;
+}
+
+.provider-form .cancel-edit:hover {
+    background-color: #5a6268;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.form-actions button {
+  width: auto;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+}
+
+#back-button {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: auto;
+  padding: 0.5rem 1rem;
 }

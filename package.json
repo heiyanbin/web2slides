@@ -4,7 +4,7 @@
   "main": "background.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild src/popup.js src/background.js src/content.js src/settings.js --bundle --outdir=dist"
+    "build": "esbuild src/popup.js src/background.js src/content.js --bundle --outdir=dist"
   },
   "keywords": [],
   "author": "",

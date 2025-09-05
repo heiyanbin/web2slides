@@ -5,12 +5,23 @@
   <link rel="stylesheet" href="dist/popup.css">
 </head>
 <body>
-  <h1>Web2Slides</h1>
-  <label for="provider">Provider:</label>
-  <select id="provider"></select>
-  <button id="generate">Generate Slides</button>
-  <hr>
-  <a href="settings.html" target="_blank">Settings</a>
+  <div id="main-view">
+    <h1>Web2Slides</h1>
+    <h3 for="provider">LLM Provider:</h3>
+    <select id="provider"></select>
+    <div class="main-actions">
+      <button id="generate">Generate Slides</button>
+      <button id="settings-button" class="settings-btn">Settings</button>
+    </div>
+  </div>
+
+  <div id="settings-view" style="display: none;">
+    <button id="back-button">Back</button>
+    <h1>LLM Providers</h1>
+    <div id="providers-container"></div>
+    <button id="add-provider">Add Provider</button>
+  </div>
+
   <script src="dist/popup.js"></script>
 </body>
 </html>
