@@ -1,32 +1,41 @@
-const apiKeyInput = document.getElementById('apiKey');
-const baseUrlInput = document.getElementById('baseUrl');
-const modelInput = document.getElementById('model');
-const saveButton = document.getElementById('save');
-const generateButton = document.getElementById('generate');
+import './popup.css';
 
-// Load the saved API key, base URL, and model when the popup is opened
-chrome.storage.local.get(['apiKey', 'baseUrl', 'model'], (data) => {
-  if (data.apiKey) {
-    apiKeyInput.value = data.apiKey;
-  }
-  if (data.baseUrl) {
-    baseUrlInput.value = data.baseUrl;
-  }
-  if (data.model) {
-    modelInput.value = data.model;
-  }
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const providerSelect = document.getElementById('provider');
+  const generateButton = document.getElementById('generate');
 
-saveButton.addEventListener('click', () => {
-  const apiKey = apiKeyInput.value;
-  const baseUrl = baseUrlInput.value;
-  const model = modelInput.value;
-  chrome.storage.local.set({ apiKey, baseUrl, model }, () => {
-    alert('Settings saved!');
+  let providers = [];
+  let activeProvider = null;
+
+  // Load providers and active provider from storage
+  chrome.storage.local.get(['llmProviders', 'activeProvider'], (data) => {
+    if (data.llmProviders) {
+      providers = data.llmProviders;
+      populateProviderSelect();
+    }
+    if (data.activeProvider) {
+      activeProvider = data.activeProvider;
+      providerSelect.value = activeProvider;
+    }
   });
-});
 
-generateButton.addEventListener('click', () => {
-  console.log('Sending generateSlides message from popup.'); // Added this line
-  chrome.runtime.sendMessage({ action: 'generateSlides' });
+  function populateProviderSelect() {
+    providerSelect.innerHTML = '';
+    providers.forEach((provider) => {
+      const option = document.createElement('option');
+      option.value = provider.name;
+      option.textContent = provider.name;
+      providerSelect.appendChild(option);
+    });
+  }
+
+  providerSelect.addEventListener('change', () => {
+    activeProvider = providerSelect.value;
+    chrome.storage.local.set({ activeProvider });
+  });
+
+  generateButton.addEventListener('click', () => {
+    console.log('Sending generateSlides message from popup.');
+    chrome.runtime.sendMessage({ action: 'generateSlides' });
+  });
 });

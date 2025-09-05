@@ -2,41 +2,15 @@
 <html>
 <head>
   <title>Web2Slides</title>
-  <style>
-    body {
-      width: 300px;
-      padding: 10px;
-      font-family: sans-serif;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-    input {
-      width: 100%;
-      padding: 5px;
-      margin-bottom: 10px;
-    }
-    button {
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      width: 100%;
-    }
-  </style>
+  <link rel="stylesheet" href="dist/popup.css">
 </head>
 <body>
   <h1>Web2Slides</h1>
-  <label for="apiKey">API Key:</label>
-  <input type="text" id="apiKey">
-  <label for="baseUrl">Base URL:</label>
-  <input type="text" id="baseUrl">
-  <label for="model">Model:</label>
-  <input type="text" id="model">
-  <button id="save">Save</button>
-  <hr>
+  <label for="provider">Provider:</label>
+  <select id="provider"></select>
   <button id="generate">Generate Slides</button>
+  <hr>
+  <a href="settings.html" target="_blank">Settings</a>
   <script src="dist/popup.js"></script>
 </body>
 </html>
