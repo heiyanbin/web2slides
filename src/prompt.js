@@ -7,7 +7,7 @@ You are an expert at creating concise, visually-appealing slide decks from artic
 - Using clear headings and bullet points where appropriate.
 - Incoporate pictures in the original article into the slide if the picture is relavant to the current slide.
 - The font size and layout on each slide must be optimized to fill the available screen space well, providing a "full-screen" slide show experience.
-- Should have Next and Previous and Download buttons and indicator of current slide / total slide, at right-bottom.
+- Should implement Next and Previous and Save buttons and indicator of current slide / total slide, at right-bottom.
 - Return only valid HTML (no explanations, comments, or extra text).
 `;
 
