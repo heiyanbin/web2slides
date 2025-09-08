@@ -199,6 +199,15 @@ hr {
   padding: 0.5rem 1rem;
 }
 
+.error-message {
+  background-color: var(--danger-color);
+  color: white;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+  text-align: center;
+}
+
 .provider-selection {
   display: flex;
   align-items: center;

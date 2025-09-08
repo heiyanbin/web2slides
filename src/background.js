@@ -34,16 +34,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const activeProviderName = data.activeProvider;
 
       if (!providers || !activeProviderName) {
-        sendNotification('Configuration Missing', 'Please select a provider in the extension popup.');
-        chrome.runtime.sendMessage({ action: 'generationComplete' });
+        handleGenerationError('Configuration Missing', 'Please select a provider in the extension popup.');
         return;
       }
 
       const activeProvider = providers.find(p => p.name === activeProviderName);
 
       if (!activeProvider || !activeProvider.apiKey) {
-        sendNotification('Configuration Missing', `Please set your API Key for ${activeProviderName} in the settings.`);
-        chrome.runtime.sendMessage({ action: 'generationComplete' });
+        handleGenerationError('Configuration Missing', `Please set your API Key for ${activeProviderName} in the settings.`);
         return;
       }
 
@@ -51,8 +49,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     });
   } else if (request.action === 'contentScriptError') {
     console.error('Content script error:', request.error);
-    sendNotification('Content Script Error', `An error occurred in the content script: ${request.error}`);
-    chrome.runtime.sendMessage({ action: 'generationComplete' });
+    handleGenerationError('Content Script Error', `An error occurred in the content script: ${request.error}`);
   }
 });
 
@@ -84,7 +81,7 @@ async function generateSlides(provider, content) {
     if (!response.ok) {
       const errorMessage = data?.error?.message || `Status: ${response.status}`;
       console.error('Error generating slides:', data);
-      sendNotification('Error Generating Slides', `An error occurred: ${errorMessage}`);
+      handleGenerationError('Error Generating Slides', `An error occurred: ${errorMessage}`);
       return;
     }
 
@@ -96,18 +93,18 @@ async function generateSlides(provider, content) {
       slidesHtml = match[1];
     }
     chrome.tabs.create({ url: 'data:text/html;charset=utf-8,' + encodeURIComponent(slidesHtml) });
+    chrome.runtime.sendMessage({ action: 'generationSuccess' });
   } catch (error) {
     console.error('Error generating slides:', error);
-    sendNotification('Error Generating Slides', 'An unexpected error occurred. Please check the console for more details.');
+    handleGenerationError('Error Generating Slides', `An unexpected error occurred: ${error.message}`);
   } finally {
     chrome.runtime.sendMessage({ action: 'generationComplete' });
   }
 }
 
-function sendNotification(title, message) {
-  chrome.notifications.create({
-    type: 'basic',
-    title: title,
-    message: message,
+function handleGenerationError(title, message) {
+  chrome.runtime.sendMessage({
+    action: 'generationError',
+    error: { title, message }
   });
 }

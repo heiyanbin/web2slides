@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modelNameElement = document.getElementById('model-name');
   const generateButton = document.getElementById('generate');
   const settingsButton = document.getElementById('settings-button');
+  const errorContainer = document.getElementById('error-container');
 
   // Settings view elements
   const backButton = document.getElementById('back-button');
@@ -76,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeProvider = providers.find(p => p.name === activeProviderName);
 
     if (!activeProvider || !activeProvider.apiKey) {
-      alert(`Please configure the API key for ${activeProviderName}.`);
+      showError('Configuration Missing', `Please configure the API key for ${activeProviderName}.`);
       mainView.style.display = 'none';
       settingsView.style.display = 'block';
       const providerIndex = providers.findIndex(p => p.name === activeProviderName);
@@ -86,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    hideError();
     generateButton.disabled = true;
     generateButton.textContent = 'Generating...';
     console.log('Sending generateSlides message from popup.');
@@ -101,8 +103,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (request.action === 'generationComplete') {
       generateButton.disabled = false;
       generateButton.textContent = 'Generate Slides';
+    } else if (request.action === 'generationError') {
+      showError(request.error.title, request.error.message);
+    } else if (request.action === 'generationSuccess') {
+      hideError();
     }
   });
+
+  function showError(title, message) {
+    errorContainer.innerHTML = `<strong>${title}:</strong> ${message}`;
+    errorContainer.style.display = 'block';
+  }
+
+  function hideError() {
+    errorContainer.style.display = 'none';
+  }
 
   // --- Settings View Logic ---
   backButton.addEventListener('click', () => {

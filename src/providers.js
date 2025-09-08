@@ -23,7 +23,7 @@ export const PROVIDERS = {
   kimi: {
     name: 'Kimi',
     baseUrl: 'https://api.moonshot.cn/v1',
-    model: 'kimi-k2',
+    model: 'kimi-k2-0711-preview',
   },
   openai: {
     name: 'OpenAI',
