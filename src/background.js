@@ -68,6 +68,7 @@ async function generateSlides(provider, content) {
       { role: 'system', content: SLIDE_GENERATION_PROMPT },
       { role: 'user', content: `Here is the article content:\n\n${content}` },
     ],
+    temperature: 0.9, // Added temperature parameter
   };
 
   try {
@@ -87,7 +88,13 @@ async function generateSlides(provider, content) {
       return;
     }
 
-    const slidesHtml = data.choices[0].message.content;
+    let slidesHtml = data.choices[0].message.content;
+    // The LLM may wrap the response in a markdown block, so we extract the content.
+    const htmlBlockRegex = /```(?:html)?\s*\n?([\s\S]*?)\n?```/;
+    const match = slidesHtml.match(htmlBlockRegex);
+    if (match && typeof match[1] === 'string') {
+      slidesHtml = match[1];
+    }
     chrome.tabs.create({ url: 'data:text/html;charset=utf-8,' + encodeURIComponent(slidesHtml) });
   } catch (error) {
     console.error('Error generating slides:', error);

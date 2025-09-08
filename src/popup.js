@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Main view elements
   const providerSelect = document.getElementById('provider');
+  const modelNameElement = document.getElementById('model-name');
   const generateButton = document.getElementById('generate');
   const settingsButton = document.getElementById('settings-button');
 
@@ -31,13 +32,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (data.activeProvider) {
       activeProviderName = data.activeProvider;
       providerSelect.value = activeProviderName;
+    } else if (providers.length > 0) {
+      activeProviderName = providers[0].name;
+      chrome.storage.local.set({ activeProvider: activeProviderName });
     }
 
     populateProviderSelect();
     renderProviders();
+    if (activeProviderName) {
+      updateModelName(activeProviderName);
+    }
   });
 
   // --- Main View Logic ---
+  function updateModelName(providerName) {
+    const provider = providers.find(p => p.name === providerName);
+    if (provider) {
+      modelNameElement.textContent = provider.model;
+    }
+  }
+
   function populateProviderSelect() {
     providerSelect.innerHTML = '';
     providers.forEach((provider) => {
@@ -48,12 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (activeProviderName) {
         providerSelect.value = activeProviderName;
+        updateModelName(activeProviderName);
     }
   }
 
   providerSelect.addEventListener('change', () => {
     activeProviderName = providerSelect.value;
     chrome.storage.local.set({ activeProvider: activeProviderName });
+    updateModelName(activeProviderName);
   });
 
   generateButton.addEventListener('click', () => {

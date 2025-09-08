@@ -2,14 +2,16 @@ export const SLIDE_GENERATION_PROMPT = `
 Convert the given article into an HTML slide deck.
 
 Requirements:
+- The output language should be the same with the input language.
 - Ensure each slide fits within a single screen.
-- Structure the content on each slide for maximum readability, using clear headings and bullet points where appropriate.
-- Incoporate pictures in the original article into the slide if possible, and well fit them.
+- Incoporate pictures in the original article into the slide if possible.
 - The font size and layout on each slide must be optimized to fill the available screen space well, providing a "full-screen" slide show experience.
-- Should have Next and Previous and Download button.
+- No dark theme.
+- Should have Next and Previous and Download buttons.
 - Return only valid HTML (no explanations, comments, or extra text).
 `;
 
+// - Structure the content on each slide for maximum readability, using clear headings and bullet points where appropriate.
 export const xxxSLIDE_GENERATION_PROMPT = `
 You are an expert at creating concise, visually-appealing slide decks from articles.
 

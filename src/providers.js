@@ -15,4 +15,29 @@ export const PROVIDERS = {
     baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai',
     model: 'gemini-2.5-flash',
   },
+  qwen: {
+    name: 'Qwen',
+    baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+    model: 'qwen-plus',
+  },
+  kimi: {
+    name: 'Kimi',
+    baseUrl: 'https://api.moonshot.cn/v1',
+    model: 'kimi-k2',
+  },
+  openai: {
+    name: 'OpenAI',
+    baseUrl: 'https://api.openai.com/v1',
+    model: 'gpt-4o',
+  },
+  grok: {
+    name: 'Grok',
+    baseUrl: 'https://api.x.ai/v1',
+    model: 'grok-3',
+  },
+  claude: {
+    name: 'Claude',
+    baseUrl: 'https://api.anthropic.com/v1',
+    model: 'claude-3-opus-20240229',
+  },
 };
