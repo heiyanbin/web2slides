@@ -21,6 +21,13 @@
 
   <div id="settings-view" style="display: none;">
     <button id="back-button">Back</button>
+    <h1>Settings</h1>
+    <div class="setting">
+      <label for="temperature">Temperature:</label>
+      <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+      <span id="temperature-value">0.7</span>
+    </div>
+    <hr>
     <h1>LLM Providers</h1>
     <div id="providers-container"></div>
     <button id="add-provider">Add Provider</button>

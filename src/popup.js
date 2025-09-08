@@ -17,12 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const backButton = document.getElementById('back-button');
   const providersContainer = document.getElementById('providers-container');
   const addProviderButton = document.getElementById('add-provider');
+  const temperatureInput = document.getElementById('temperature');
+  const temperatureValue = document.getElementById('temperature-value');
 
   let providers = [];
   let activeProviderName = null;
+  let temperature = 0.7;
 
   // Load data from storage
-  chrome.storage.local.get(['llmProviders', 'activeProvider'], (data) => {
+  chrome.storage.local.get(['llmProviders', 'activeProvider', 'temperature'], (data) => {
     if (data.llmProviders && data.llmProviders.length > 0) {
       providers = data.llmProviders;
     } else {
@@ -36,6 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (providers.length > 0) {
       activeProviderName = providers[0].name;
       chrome.storage.local.set({ activeProvider: activeProviderName });
+    }
+
+    if (data.temperature) {
+      temperature = data.temperature;
+      temperatureInput.value = temperature;
+      temperatureValue.textContent = temperature;
     }
 
     populateProviderSelect();
@@ -123,6 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
   backButton.addEventListener('click', () => {
     mainView.style.display = 'block';
     settingsView.style.display = 'none';
+  });
+
+  temperatureInput.addEventListener('input', () => {
+    temperatureValue.textContent = temperatureInput.value;
+    chrome.storage.local.set({ temperature: parseFloat(temperatureInput.value) });
   });
 
   function renderProviders() {

@@ -29,9 +29,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
     });
   } else if (request.action === 'extractedContent') {
-    chrome.storage.local.get(['llmProviders', 'activeProvider'], (data) => {
+    chrome.storage.local.get(['llmProviders', 'activeProvider', 'temperature'], (data) => {
       const providers = data.llmProviders;
       const activeProviderName = data.activeProvider;
+      const temperature = data.temperature || 0.7;
 
       if (!providers || !activeProviderName) {
         handleGenerationError('Configuration Missing', 'Please select a provider in the extension popup.');
@@ -45,7 +46,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return;
       }
 
-      generateSlides(activeProvider, request.content);
+      generateSlides(activeProvider, request.content, temperature);
     });
   } else if (request.action === 'contentScriptError') {
     console.error('Content script error:', request.error);
@@ -53,7 +54,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-async function generateSlides(provider, content) {
+async function generateSlides(provider, content, temperature) {
   const endpoint = `${provider.baseUrl}/chat/completions`;
   const headers = {
     'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ async function generateSlides(provider, content) {
       { role: 'system', content: SLIDE_GENERATION_PROMPT },
       { role: 'user', content: `Here is the article content:\n\n${content}` },
     ],
-    temperature: 0.9, // Added temperature parameter
+    temperature: temperature,
   };
 
   try {
@@ -87,7 +88,7 @@ async function generateSlides(provider, content) {
 
     let slidesHtml = data.choices[0].message.content;
     // The LLM may wrap the response in a markdown block, so we extract the content.
-    const htmlBlockRegex = /```(?:html)?\s*\n?([\s\S]*?)\n?```/;
+    const htmlBlockRegex = /```(?:html)?\s*([\s\S]*?)\s*```/
     const match = slidesHtml.match(htmlBlockRegex);
     if (match && typeof match[1] === 'string') {
       slidesHtml = match[1];
