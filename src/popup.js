@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.local.set({ activeProvider: activeProviderName });
     }
 
-    if (data.temperature) {
+    if (data.temperature !== undefined) {
       temperature = data.temperature;
       temperatureInput.value = temperature;
       temperatureValue.textContent = temperature;

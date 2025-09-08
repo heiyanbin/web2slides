@@ -18,8 +18,22 @@ This project is a Chrome Extension called **Web2Slides**. It's designed to take 
 
 ## Building and Running
 
-*   **TODO:** Add instructions on how to load the extension in Chrome for development.
-*   **TODO:** Add instructions on how to build the extension for production.
+### Building the extension
+
+To build the extension, run the following command:
+
+```bash
+npm run build
+```
+
+This will create a `dist` directory with the bundled extension files.
+
+### Loading the extension in Chrome for development
+
+1.  Open Chrome and navigate to `chrome://extensions`.
+2.  Enable "Developer mode".
+3.  Click "Load unpacked".
+4.  Select the `dist` directory.
 
 ## Development Conventions
 
