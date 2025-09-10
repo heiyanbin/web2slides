@@ -35,6 +35,11 @@ export const PROVIDERS = {
     baseUrl: 'https://api.x.ai/v1',
     model: 'grok-3',
   },
+  openrouter: {
+    name: 'OpenRouter',
+    baseUrl: 'https://openrouter.ai/api/v1',
+    model: 'z-ai/glm-4.5-air:free',
+  },
   claude: {
     name: 'Claude',
     baseUrl: 'https://api.anthropic.com/v1',
