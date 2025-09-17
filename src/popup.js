@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const generateButton = document.getElementById('generate');
   const settingsButton = document.getElementById('settings-button');
   const errorContainer = document.getElementById('error-container');
+  const userInstructions = document.getElementById('user-instructions');
 
   // Settings view elements
   const backButton = document.getElementById('back-button');
@@ -99,8 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
     hideError();
     generateButton.disabled = true;
     generateButton.textContent = 'Generating...';
+    const instructions = userInstructions.value;
     console.log('Sending generateSlides message from popup.');
-    chrome.runtime.sendMessage({ action: 'generateSlides' });
+    chrome.runtime.sendMessage({ action: 'generateSlides', instructions });
   });
 
   settingsButton.addEventListener('click', () => {

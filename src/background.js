@@ -3,6 +3,8 @@ import { PROVIDERS } from './providers.js';
 
 console.log('Web2Slides background script loaded.');
 
+let userInstructions = '';
+
 function initializeProviders() {
   chrome.storage.local.get('llmProviders', (data) => {
     if (!data.llmProviders) {
@@ -22,6 +24,7 @@ chrome.runtime.onStartup.addListener(initializeProviders);
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'generateSlides') {
+    userInstructions = request.instructions;
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -46,7 +49,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return;
       }
 
-      generateSlides(activeProvider, request.content, temperature);
+      generateSlides(activeProvider, request.content, temperature, userInstructions);
+      userInstructions = ''; // Clear instructions after use
     });
   } else if (request.action === 'contentScriptError') {
     console.error('Content script error:', request.error);
@@ -54,17 +58,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-async function generateSlides(provider, content, temperature) {
+async function generateSlides(provider, content, temperature, instructions) {
   const endpoint = `${provider.baseUrl}/chat/completions`;
   const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${provider.apiKey}`,
   };
+
+  const userPrompt = `Here is the article content:\n\n${content}`;
+  const finalUserPrompt = instructions ? `Instuctions: ${instructions}\n\n${userPrompt}` : userPrompt;
+
   const body = {
     model: provider.model,
     messages: [
       { role: 'system', content: SLIDE_GENERATION_PROMPT },
-      { role: 'user', content: `Here is the article content:\n\n${content}` },
+      { role: 'user', content: finalUserPrompt },
     ],
     temperature: temperature,
   };
